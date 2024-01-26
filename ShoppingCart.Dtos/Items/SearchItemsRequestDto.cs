@@ -1,5 +1,4 @@
-﻿using ShoppingCart.Dtos.CustomAttributes;
-using ShoppingCart.Dtos.Enums;
+﻿using ShoppingCart.Dtos.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

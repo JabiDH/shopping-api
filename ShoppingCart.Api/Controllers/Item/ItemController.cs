@@ -9,16 +9,16 @@ namespace ShoppingCart.Api.Controllers.Item
     [ApiController]
     public class ItemController : ControllerBase
     {
-        private readonly IItemService itemService;
-        public ItemController(IItemService itemService)
+        private readonly IItemsService itemsService;
+        public ItemController(IItemsService itemsService)
         {
-            this.itemService = itemService;
+            this.itemsService = itemsService;
         }
         
         [HttpGet]
         public async Task<IActionResult> GetAllItems()
         {
-            var response = await itemService.GetAllItemsAsync();
+            var response = await itemsService.GetAllItemsAsync();
             if (response != null)
             {
                 return response.Succeeded ? Ok(response) : BadRequest(response);
@@ -29,9 +29,35 @@ namespace ShoppingCart.Api.Controllers.Item
         [HttpGet]
         public async Task<IActionResult> SearchItems([FromQuery] SearchItemsRequestDto requestDto)
         {
-            var items = await itemService.SearchItemsAsync(requestDto);
-            return Ok(items);
+            var response = await itemsService.SearchItemsAsync(requestDto);
+            if (response != null)
+            {
+                return response.Succeeded ? Ok(response) : BadRequest(response);
+            }
+            return BadRequest("Unhandle error occured on " + nameof(SearchItems));
         }
 
+        [HttpGet]
+        [Route("{id:long}")]
+        public async Task<IActionResult> GetItem([FromRoute] long id)
+        { 
+            var response = await itemsService.GetItemAsync(id);
+            return response.Succeeded? Ok(response) : NotFound(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateItem([FromBody] UpsertItemRequestDto item)
+        {
+            var response = await itemsService.UpsertItemAsync(0, item);
+            return response.Succeeded ? Ok(response) : BadRequest(response);
+        }
+
+        [HttpPut]
+        [Route("{id:long}")]
+        public async Task<IActionResult> UpdateItem([FromRoute] long id, UpsertItemRequestDto item)
+        {
+            var response = await itemsService.UpsertItemAsync(id, item);
+            return response.Succeeded ? Ok(response) : BadRequest(response);
+        }
     }
 }

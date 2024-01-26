@@ -7,12 +7,12 @@ using ShoppingCart.Models.DataModels;
 
 namespace ShoppingCart.Services.Items
 {
-    public class ItemService : IItemService
+    public class ItemsService : IItemsService
     {
         private readonly ShoppingCartDbContext dbContext;
         private readonly IMapper mapper;
 
-        public ItemService(ShoppingCartDbContext dbContext, IMapper mapper)
+        public ItemsService(ShoppingCartDbContext dbContext, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -34,6 +34,63 @@ namespace ShoppingCart.Services.Items
             };
         }
 
+        public async Task<GetItemResponseDto> GetItemAsync(long id)
+        {
+            var responseDto = new GetItemResponseDto();
+            var itemDto = await dbContext.Items.Include(i => i.Category).SingleOrDefaultAsync(x => x.Id == id);
+            
+            if (itemDto == null)
+            {
+                responseDto.Error = "No item found.";
+                return responseDto;
+            }
+
+            responseDto.Item = mapper.Map<ItemDto>(itemDto);
+            return responseDto;
+        }
+
+
+        public async Task<UpsertItemResponseDto> UpsertItemAsync(long id, UpsertItemRequestDto item)
+        { 
+            var response = new UpsertItemResponseDto();
+
+            if (id < 0 || (id == 0 && item == null) || (id > 0 && item == null))
+            {
+                response.Error = "Bad data.";
+            }
+
+            // Create item
+            if (id == 0)
+            {
+                Item itemToAdd = mapper.Map<Item>(item);
+                await dbContext.AddAsync(itemToAdd);
+                await dbContext.SaveChangesAsync();
+
+                response.Item = mapper.Map<ItemDto>(itemToAdd);
+            }
+            // Update item
+            else
+            {                
+                Item itemToUpdate = await dbContext.Items.SingleOrDefaultAsync(x => x.Id == id);
+                if (itemToUpdate != null)
+                {
+                    itemToUpdate.CategoryId = item.CategoryId;
+                    itemToUpdate.Name = item.Name;
+                    itemToUpdate.Description = item.Description;
+                    itemToUpdate.ImagePath = item.ImagePath;
+                    itemToUpdate.Price = item.Price;
+                    await dbContext.SaveChangesAsync();
+
+                    response.Item = mapper.Map<ItemDto>(itemToUpdate);
+                }
+                else 
+                {
+                    response.Error = "No item found.";
+                }
+            }
+
+            return response;
+        }
         private async Task<List<ItemDto>> GetItemsAsync(SearchItemsRequestDto? requestDto = null)
         {
             var itemsDtos = dbContext
