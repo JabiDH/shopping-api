@@ -1,5 +1,6 @@
 ﻿using ShoppingCart.Dtos.Categories;
 using ShoppingCart.Dtos.Common;
+using ShoppingCart.Models.DataModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,6 @@ namespace ShoppingCart.Dtos.Items
         public decimal Price { get; set; }
         public CategoryDto Category { get; set; }
         public long CategoryId { get; set; }
+        public List<ItemImageDto> Images { get; set; }
     }
 }

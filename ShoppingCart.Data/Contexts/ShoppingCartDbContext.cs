@@ -19,6 +19,8 @@ namespace ShoppingCart.Data.Contexts
         public DbSet<Item> Items { get; set; }
         public DbSet<Category> Categories { get; set; }
 
+        public DbSet<ItemImage> ItemImages { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             
@@ -32,6 +34,12 @@ namespace ShoppingCart.Data.Contexts
 
                 entity.Property(e => e.Price)
                 .HasPrecision(18, 2);
+
+                entity.HasMany(e => e.Images)
+                .WithOne(e => e.Item)
+                .HasForeignKey(e => e.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
+                
             });            
 
             modelBuilder.Entity<Category>(entity => {

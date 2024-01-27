@@ -37,7 +37,10 @@ namespace ShoppingCart.Services.Items
         public async Task<GetItemResponseDto> GetItemAsync(long id)
         {
             var responseDto = new GetItemResponseDto();
-            var itemDto = await dbContext.Items.Include(i => i.Category).SingleOrDefaultAsync(x => x.Id == id);
+            var itemDto = await dbContext.Items
+                .Include(i => i.Category)
+                .Include(i => i.Images)
+                .SingleOrDefaultAsync(x => x.Id == id);
             
             if (itemDto == null)
             {
@@ -48,7 +51,6 @@ namespace ShoppingCart.Services.Items
             responseDto.Item = mapper.Map<ItemDto>(itemDto);
             return responseDto;
         }
-
 
         public async Task<UpsertItemResponseDto> UpsertItemAsync(long id, UpsertItemRequestDto item)
         { 
@@ -71,7 +73,11 @@ namespace ShoppingCart.Services.Items
             // Update item
             else
             {                
-                Item itemToUpdate = await dbContext.Items.SingleOrDefaultAsync(x => x.Id == id);
+                Item itemToUpdate = await dbContext.Items
+                    .Include(x => x.Category)
+                    .Include(x => x.Images)
+                    .SingleOrDefaultAsync(x => x.Id == id);
+
                 if (itemToUpdate != null)
                 {
                     itemToUpdate.CategoryId = item.CategoryId;
@@ -79,8 +85,20 @@ namespace ShoppingCart.Services.Items
                     itemToUpdate.Description = item.Description;
                     itemToUpdate.ImagePath = item.ImagePath;
                     itemToUpdate.Price = item.Price;
-                    await dbContext.SaveChangesAsync();
+                    
+                    if (item.Images != null) 
+                    {
+                        var itemImages = await dbContext.ItemImages.Where(x => x.ItemId == item.Id).ToListAsync();
+                        foreach (var itemImage in itemImages)
+                        {
+                            dbContext.ItemImages.Remove(itemImage);
+                        }
+                        var imagesToAdd = mapper.Map<List<ItemImage>>(item.Images);
+                        await dbContext.ItemImages.AddRangeAsync(imagesToAdd);
+                        itemToUpdate.Images = imagesToAdd;
+                    }
 
+                    await dbContext.SaveChangesAsync();
                     response.Item = mapper.Map<ItemDto>(itemToUpdate);
                 }
                 else 
@@ -91,11 +109,30 @@ namespace ShoppingCart.Services.Items
 
             return response;
         }
+
+        public async Task<DeleteItemResponseDto> DeleteItemAsync(long id)
+        {
+            var response = new DeleteItemResponseDto();
+            var itemToDelete = await dbContext.Items.SingleOrDefaultAsync(item => item.Id == id);
+            
+            if (itemToDelete == null)
+            {
+                response.Error = "No item found.";
+                return response;                                
+            }            
+
+            response.Item = mapper.Map<ItemDto>(itemToDelete);
+            dbContext.Items.Remove(itemToDelete);
+            await dbContext.SaveChangesAsync();
+            return response;
+        }
+
         private async Task<List<ItemDto>> GetItemsAsync(SearchItemsRequestDto? requestDto = null)
         {
             var itemsDtos = dbContext
                 .Items
                 .Include(i => i.Category)
+                .Include(i => i.Images)
                 .AsQueryable();
 
             if (requestDto != null)

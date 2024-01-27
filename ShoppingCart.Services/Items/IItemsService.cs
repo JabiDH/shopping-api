@@ -13,5 +13,7 @@ namespace ShoppingCart.Services.Items
         Task<SeachItemsResponseDto> SearchItemsAsync(SearchItemsRequestDto? requestDto);
         Task<GetItemResponseDto> GetItemAsync(long id);
         Task<UpsertItemResponseDto> UpsertItemAsync(long id, UpsertItemRequestDto item);
+        Task<DeleteItemResponseDto> DeleteItemAsync(long id);
+
     }
 }

@@ -19,5 +19,6 @@ namespace ShoppingCart.Dtos.Items
         public decimal Price { get; set; }
         [Required]
         public long CategoryId { get; set; }
+        public List<ItemImageDto>? Images { get; set; }
     }
 }

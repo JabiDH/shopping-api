@@ -59,5 +59,13 @@ namespace ShoppingCart.Api.Controllers.Item
             var response = await itemsService.UpsertItemAsync(id, item);
             return response.Succeeded ? Ok(response) : BadRequest(response);
         }
+
+        [HttpDelete]
+        [Route("{id:long}")]
+        public async Task<IActionResult> DeleteItem([FromRoute] long id)
+        {
+            var response = await itemsService.DeleteItemAsync(id);
+            return response.Succeeded ? Ok(response) : BadRequest(response);
+        }
     }
 }

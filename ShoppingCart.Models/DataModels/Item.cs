@@ -16,6 +16,6 @@ namespace ShoppingCart.Models.DataModels
         public decimal Price { get; set; }
         public Category Category { get; set; }
         public long CategoryId { get; set; }
-
+        public List<ItemImage> Images { get; set; }
     }
 }
