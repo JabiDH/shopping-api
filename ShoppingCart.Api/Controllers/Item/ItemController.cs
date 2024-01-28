@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Dtos.Items;
 using ShoppingCart.Services.Items;
@@ -7,6 +8,7 @@ namespace ShoppingCart.Api.Controllers.Item
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class ItemController : ControllerBase
     {
         private readonly IItemsService itemsService;

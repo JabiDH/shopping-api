@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Services.Categories;
 
@@ -6,6 +7,7 @@ namespace ShoppingCart.Api.Controllers.Category
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
+    [Authorize]
     public class CategoryController : ControllerBase
     {
         private readonly ICategoriesService categoriesService;

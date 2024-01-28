@@ -22,11 +22,12 @@ namespace ShoppingCart.Data.Contexts
 
             var readerRoleId = "ede95183-48e9-4312-9cf9-499554fc53ed";
             var writerRoleId = "60fecca9-8070-4d0b-9ccc-3ff6d077971c";
+            var adminRoleId = "4F2FED6E-34E0-44D3-8E97-E848DFC3DE7C";
 
             var roles = new List<IdentityRole>()
             {
-                new IdentityRole() 
-                { 
+                new IdentityRole()
+                {
                     Id = readerRoleId,
                     ConcurrencyStamp = readerRoleId,
                     Name = "Reader",
@@ -38,6 +39,13 @@ namespace ShoppingCart.Data.Contexts
                     ConcurrencyStamp = writerRoleId,
                     Name = "Writer",
                     NormalizedName = "Writer".ToUpper()
+                },
+                new IdentityRole()
+                {
+                    Id = adminRoleId,
+                    ConcurrencyStamp = adminRoleId,
+                    Name = "Admin",
+                    NormalizedName = "Admin".ToUpper()
                 }
             };
 
