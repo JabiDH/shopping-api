@@ -48,17 +48,17 @@ namespace ShoppingCart.Api.Controllers.Item
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateItem([FromBody] UpsertItemRequestDto item)
+        public async Task<IActionResult> CreateItem([FromBody] UpsertItemRequestDto request)
         {
-            var response = await itemsService.UpsertItemAsync(0, item);
+            var response = await itemsService.UpsertItemAsync(0, request);
             return response.Succeeded ? Ok(response) : BadRequest(response);
         }
 
         [HttpPut]
         [Route("{id:long}")]
-        public async Task<IActionResult> UpdateItem([FromRoute] long id, UpsertItemRequestDto item)
+        public async Task<IActionResult> UpdateItem([FromRoute] long id, UpsertItemRequestDto request)
         {
-            var response = await itemsService.UpsertItemAsync(id, item);
+            var response = await itemsService.UpsertItemAsync(id, request);
             return response.Succeeded ? Ok(response) : BadRequest(response);
         }
 

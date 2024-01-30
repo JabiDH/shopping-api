@@ -69,8 +69,8 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 var logger = new LoggerConfiguration()
     .WriteTo.Console()
-    .WriteTo.File("Logs/ShoppingCart_Api_Log.txt", rollingInterval: RollingInterval.Day)
-    .MinimumLevel.Warning()
+    .WriteTo.File("Logs/ShoppingCart_Api_Log.txt", rollingInterval: RollingInterval.Infinite)
+    .MinimumLevel.Verbose()
     .CreateLogger();
 
 builder.Logging.ClearProviders();

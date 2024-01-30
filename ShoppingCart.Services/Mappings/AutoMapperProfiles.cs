@@ -13,6 +13,7 @@ namespace ShoppingCart.Services.Mappings
             CreateMap<Category, CategoryDto>().ReverseMap();
             CreateMap<Item, UpsertItemRequestDto>().ReverseMap();
             CreateMap<ItemImage, ItemImageDto>().ReverseMap();
+            CreateMap<Category, UpsertCategoryRequestDto>().ReverseMap();
         }
     }
 }

@@ -11,5 +11,9 @@ namespace ShoppingCart.Services.Categories
     public interface ICategoriesService
     {
         Task<GetAllCategoriesResponseDto> GetAllCategoriesAsync();
+        Task<GetCategoryResponseDto> GetCategoryAsync(long id);
+        Task<UpsertCategoryResponseDto> UpsertCategoryAsync(long id, UpsertCategoryRequestDto request);
+        Task<DeleteCategoryResponseDto> DeleteCategoryAsync(long id);
+
     }
 }

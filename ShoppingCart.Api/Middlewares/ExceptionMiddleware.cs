@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.Http.Extensions;
 using ShoppingCart.Dtos.Common.Responses;
+using System.Net;
 
 namespace ShoppingCart.Api.Middlewares
 {
@@ -30,10 +31,10 @@ namespace ShoppingCart.Api.Middlewares
                 var errResponse = new ErrorResponseDto() 
                 {
                     Id = Guid.NewGuid(),
-                    StatusCode = 500,
+                    StatusCode = (int)HttpStatusCode.InternalServerError,
                     Message = "Internal Server Error." 
                 };
-                
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
                 await context.Response.WriteAsJsonAsync(errResponse);
             }
         }

@@ -39,12 +39,16 @@ namespace ShoppingCart.Data.Contexts
                 .WithOne(e => e.Item)
                 .HasForeignKey(e => e.ItemId)
                 .OnDelete(DeleteBehavior.Cascade);
-                
+
+                entity.HasOne(e => e.Category)
+                .WithMany(e => e.Items)
+                .HasForeignKey(e => e.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
             });            
 
             modelBuilder.Entity<Category>(entity => {
                 entity.Property(e => e.Id)
-                .ValueGeneratedOnAdd();                
+                .ValueGeneratedOnAdd();               
             });
 
             // Create some categories
