@@ -12,6 +12,7 @@ using ShoppingCart.Services.Token;
 using System.Text;
 using ShoppingCart.Services.Items;
 using ShoppingCart.Services.Categories;
+using ShoppingCart.Services.Permissions;
 
 string localhostPolicy = "localhost_policy";
 
@@ -52,6 +53,7 @@ builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<ITokenService, TokenService>();
 builder.Services.AddTransient<IItemsService, ItemsService>();
 builder.Services.AddTransient<ICategoriesService, CategoriesService>();
+builder.Services.AddTransient<IPermissionsService, PermissionsService>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfiles));
 

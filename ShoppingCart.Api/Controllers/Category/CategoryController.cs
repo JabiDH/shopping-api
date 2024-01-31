@@ -37,6 +37,7 @@ namespace ShoppingCart.Api.Controllers.Category
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateCategory([FromBody] UpsertCategoryRequestDto request)
         {
             var response = await categoriesService.UpsertCategoryAsync(0, request);
@@ -45,6 +46,7 @@ namespace ShoppingCart.Api.Controllers.Category
 
         [HttpPut]
         [Route("{id:long}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateCategory([FromRoute] long id, UpsertCategoryRequestDto request)
         {
             var response = await categoriesService.UpsertCategoryAsync(id, request);
@@ -53,6 +55,7 @@ namespace ShoppingCart.Api.Controllers.Category
 
         [HttpDelete]
         [Route("{id:long}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteCategory([FromRoute] long id)
         {
             var response = await categoriesService.DeleteCategoryAsync(id);
