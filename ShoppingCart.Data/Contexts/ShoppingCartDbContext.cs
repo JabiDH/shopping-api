@@ -20,6 +20,7 @@ namespace ShoppingCart.Data.Contexts
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<ItemImage> ItemImages { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,11 +45,17 @@ namespace ShoppingCart.Data.Contexts
                 .WithMany(e => e.Items)
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+                               
             });            
 
             modelBuilder.Entity<Category>(entity => {
                 entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd();               
+            });
+
+            modelBuilder.Entity<CartItem>(entity =>
+            {
+                entity.HasKey(e => new { e.ItemId, e.Email });
             });
 
             // Create some categories

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Services.Permissions;
 
-namespace ShoppingCart.Api.Controllers.Permission
+namespace ShoppingCart.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -12,13 +12,13 @@ namespace ShoppingCart.Api.Controllers.Permission
 
         public PermissionController(IPermissionsService permissionService)
         {
-            this.permissionsService = permissionService;
+            permissionsService = permissionService;
         }
 
         [HttpGet]
         public async Task<IActionResult> HasPermission([FromQuery] string email, [FromQuery] string role)
         {
-            var hasPermission = await this.permissionsService.HasPermission(email, role);
+            var hasPermission = await permissionsService.HasPermission(email, role);
             return Ok(hasPermission);
         }
     }

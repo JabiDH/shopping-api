@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Dtos.Items;
 using ShoppingCart.Services.Items;
 
-namespace ShoppingCart.Api.Controllers.Item
+namespace ShoppingCart.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]

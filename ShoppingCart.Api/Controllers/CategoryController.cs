@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Dtos.Categories;
 using ShoppingCart.Services.Categories;
 
-namespace ShoppingCart.Api.Controllers.Category
+namespace ShoppingCart.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -30,7 +30,7 @@ namespace ShoppingCart.Api.Controllers.Category
 
         [HttpGet]
         [Route("{id:long}")]
-        public async Task<IActionResult> GetCategory([FromRoute]long id)
+        public async Task<IActionResult> GetCategory([FromRoute] long id)
         {
             var response = await categoriesService.GetCategoryAsync(id);
             return response.Succeeded ? Ok(response) : BadRequest(response);

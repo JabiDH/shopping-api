@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using ShoppingCart.Dtos.Auth;
 using ShoppingCart.Services.Auth;
 
-namespace ShoppingCart.Api.Controllers.Auth
+namespace ShoppingCart.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -17,9 +17,9 @@ namespace ShoppingCart.Api.Controllers.Auth
 
         [HttpPost]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
-        { 
+        {
             var response = await authService.RegisterAsync(request);
-            if (response != null) 
+            if (response != null)
             {
                 return response.Succeeded ? Ok(response) : BadRequest(response);
             }
