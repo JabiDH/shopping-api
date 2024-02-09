@@ -14,6 +14,8 @@ using ShoppingCart.Services.Items;
 using ShoppingCart.Services.Categories;
 using ShoppingCart.Services.Permissions;
 using ShoppingCart.Services.CartItems;
+using Microsoft.Extensions.Configuration;
+using ShoppingCart.Api.Controllers;
 
 string localhostPolicy = "localhost_policy";
 
@@ -41,7 +43,9 @@ builder.Services.AddSwaggerGen(options =>
 // Add Auth Db Context
 builder.Services.AddDbContext<AuthDbContext>(options => 
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AuthConnectionString"), sqlOptions => {
+        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(30), errorNumbersToAdd: null);
+    });   
 });
 
 // Add Shopping Cart Db Context
@@ -64,7 +68,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(localhostPolicy, p =>
     {
-        p.WithOrigins("http://localhost:4200");
+        p.WithOrigins(["http://localhost:4200"]);
         p.WithHeaders("*");
         p.WithMethods("*");
     });
@@ -113,15 +117,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),
     });
 
+// Log connection strings
+logger.Information($"Auth DB Connection string: {builder.Configuration.GetConnectionString("AuthConnectionString")}");
+logger.Information($"ShoppingCart DB Connection string: {builder.Configuration.GetConnectionString("ShoppingCartConnectionString")}");
+
 // Building app
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-//}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 

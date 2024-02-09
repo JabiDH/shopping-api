@@ -12,9 +12,13 @@ namespace ShoppingCart.Api.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemsService itemsService;
-        public ItemController(IItemsService itemsService)
+        private readonly ILogger<ItemController> logger;
+        private readonly IConfiguration configuration;
+        public ItemController(IItemsService itemsService, ILogger<ItemController> logger, IConfiguration configuration)
         {
             this.itemsService = itemsService;
+            this.logger = logger;
+            this.configuration = configuration;            
         }
 
         [HttpGet]

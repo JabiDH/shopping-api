@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ShoppingCart.Dtos.Auth;
 using ShoppingCart.Services.Auth;
 
@@ -10,9 +11,13 @@ namespace ShoppingCart.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService authService;
-        public AuthController(IAuthService authService)
+        private readonly ILogger<AuthController> logger;
+        private readonly IConfiguration configuration;
+        public AuthController(IAuthService authService, ILogger<AuthController> logger, IConfiguration configuration)
         {
             this.authService = authService;
+            this.logger = logger;
+            this.configuration = configuration;            
         }
 
         [HttpPost]
