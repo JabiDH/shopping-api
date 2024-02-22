@@ -21,6 +21,8 @@ namespace ShoppingCart.Data.Contexts
 
         public DbSet<ItemImage> ItemImages { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<ItemOrder> ItemOrders { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -45,6 +47,11 @@ namespace ShoppingCart.Data.Contexts
                 .WithMany(e => e.Items)
                 .HasForeignKey(e => e.CategoryId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasMany(e => e.ItemOrders)
+                .WithOne(e => e.Item)
+                .HasForeignKey(e => e.ItemId)
+                .OnDelete(DeleteBehavior.Restrict);
                                
             });            
 
@@ -56,6 +63,23 @@ namespace ShoppingCart.Data.Contexts
             modelBuilder.Entity<CartItem>(entity =>
             {
                 entity.HasKey(e => new { e.ItemId, e.Email });
+            });
+
+            modelBuilder.Entity<Order>(entity =>
+            {
+                entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd();
+
+                entity.HasMany(e => e.ItemOrders)
+                .WithOne(e => e.Order)
+                .HasForeignKey(e => e.OrderId)
+                .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<ItemOrder>(entity =>
+            {
+                entity.Property(e => e.Id)
+                .ValueGeneratedOnAdd();                
             });
 
             // Create some categories
