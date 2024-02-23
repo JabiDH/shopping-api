@@ -22,7 +22,7 @@ namespace ShoppingCart.Data.Contexts
         public DbSet<ItemImage> ItemImages { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<ItemOrder> ItemOrders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -70,13 +70,13 @@ namespace ShoppingCart.Data.Contexts
                 entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd();
 
-                entity.HasMany(e => e.ItemOrders)
+                entity.HasMany(e => e.OrderItems)
                 .WithOne(e => e.Order)
                 .HasForeignKey(e => e.OrderId)
                 .OnDelete(DeleteBehavior.Cascade);
             });
 
-            modelBuilder.Entity<ItemOrder>(entity =>
+            modelBuilder.Entity<OrderItem>(entity =>
             {
                 entity.Property(e => e.Id)
                 .ValueGeneratedOnAdd();                

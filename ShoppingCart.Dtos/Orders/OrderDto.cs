@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ShoppingCart.Models.DataModels
+namespace ShoppingCart.Dtos.Orders
 {
-    public class Order
+    public class OrderDto
     {
         public long Id { get; set; }
         public string Email { get; set; }
@@ -17,6 +16,6 @@ namespace ShoppingCart.Models.DataModels
         public decimal SubTotal { get; set; }
         public decimal SaleTax { get; set; }
         public decimal Total { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+        public List<OrderItemDto> OrderItems { get; set; }
     }
 }

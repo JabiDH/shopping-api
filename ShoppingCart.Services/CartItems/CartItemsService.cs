@@ -91,14 +91,23 @@ namespace ShoppingCart.Services.CartItems
 
             List<CartItem> removes = new List<CartItem>();
 
-            foreach (var cartItem in request.CartItems)
+            if (request.ClearAll == true)
             {
-                var existingCartItem = await dbContext.CartItems
-                    .SingleOrDefaultAsync(x => x.ItemId == cartItem.ItemId && x.Email.ToLower() == cartItem.Email);
+                removes = await dbContext.CartItems
+                    .Where(x => x.Email.ToLower() == request.Email)
+                    .ToListAsync();
+            }
+            else
+            {
+                foreach (var cartItem in request.CartItems)
+                {
+                    var existingCartItem = await dbContext.CartItems
+                        .SingleOrDefaultAsync(x => x.ItemId == cartItem.ItemId && x.Email.ToLower() == cartItem.Email);
 
-                if (existingCartItem != null)
-                {                    
-                    removes.Add(existingCartItem);
+                    if (existingCartItem != null)
+                    {
+                        removes.Add(existingCartItem);
+                    }
                 }
             }
 

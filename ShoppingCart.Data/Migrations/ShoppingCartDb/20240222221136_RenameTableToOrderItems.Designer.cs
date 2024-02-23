@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppingCart.Data.Contexts;
 
@@ -11,9 +12,11 @@ using ShoppingCart.Data.Contexts;
 namespace ShoppingCart.Data.Migrations.ShoppingCartDb
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    partial class ShoppingCartDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240222221136_RenameTableToOrderItems")]
+    partial class RenameTableToOrderItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,9 +239,6 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<decimal>("SaleTax")
                         .HasColumnType("decimal(18,2)");
 
@@ -293,7 +293,7 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                         .IsRequired();
 
                     b.HasOne("ShoppingCart.Models.DataModels.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany("ItemOrders")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -317,7 +317,7 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
 
             modelBuilder.Entity("ShoppingCart.Models.DataModels.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("ItemOrders");
                 });
 #pragma warning restore 612, 618
         }

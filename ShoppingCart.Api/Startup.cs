@@ -19,6 +19,7 @@ using ShoppingCart.Services.Token;
 using System;
 using System.Text;
 using ShoppingCart.Services.Mappings;
+using ShoppingCart.Services.Orders;
 
 namespace ShoppingCart.Api
 {
@@ -76,6 +77,7 @@ namespace ShoppingCart.Api
             services.AddTransient<ICategoriesService, CategoriesService>();
             services.AddTransient<IPermissionsService, PermissionsService>();
             services.AddTransient<ICartItemsService, CartItemsService>();
+            services.AddTransient<IOrdersService, OrdersService>();
 
             // Add Auto Mapper
             services.AddAutoMapper(typeof(AutoMapperProfiles));

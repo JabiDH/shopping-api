@@ -17,6 +17,6 @@ namespace ShoppingCart.Models.DataModels
         public Category Category { get; set; }
         public long CategoryId { get; set; }
         public List<ItemImage> Images { get; set; }
-        public List<ItemOrder> ItemOrders { get; set; }
+        public List<OrderItem> ItemOrders { get; set; }
     }
 }
