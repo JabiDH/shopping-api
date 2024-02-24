@@ -2,6 +2,7 @@
 using ShoppingCart.Dtos.CartItems;
 using ShoppingCart.Dtos.Categories;
 using ShoppingCart.Dtos.Items;
+using ShoppingCart.Dtos.Orders;
 using ShoppingCart.Models.DataModels;
 
 namespace ShoppingCart.Services.Mappings
@@ -16,6 +17,8 @@ namespace ShoppingCart.Services.Mappings
             CreateMap<ItemImage, ItemImageDto>().ReverseMap();
             CreateMap<Category, UpsertCategoryRequestDto>().ReverseMap();
             CreateMap<CartItem, CartItemResponseDto>().ReverseMap();
+            CreateMap<Order, OrderDto>().ReverseMap();
+            CreateMap<OrderItem, OrderItemDto>().ReverseMap();
         }
     }
 }

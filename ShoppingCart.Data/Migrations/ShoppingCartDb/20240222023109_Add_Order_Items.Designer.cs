@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ShoppingCart.Data.Contexts;
 
@@ -11,9 +12,11 @@ using ShoppingCart.Data.Contexts;
 namespace ShoppingCart.Data.Migrations.ShoppingCartDb
 {
     [DbContext(typeof(ShoppingCartDbContext))]
-    partial class ShoppingCartDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240222023109_Add_Order_Items")]
+    partial class Add_Order_Items
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,6 +186,35 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                     b.ToTable("ItemImages");
                 });
 
+            modelBuilder.Entity("ShoppingCart.Models.DataModels.ItemOrder", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("ItemId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("OrderId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SaleTax")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("ItemOrders");
+                });
+
             modelBuilder.Entity("ShoppingCart.Models.DataModels.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -197,9 +229,8 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long>("Email")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("SaleTax")
                         .HasColumnType("decimal(18,2)");
@@ -217,38 +248,6 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                     b.HasKey("Id");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ShoppingCart.Models.DataModels.OrderItem", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("ItemId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("OrderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SaleTax")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ShoppingCart.Models.DataModels.CartItem", b =>
@@ -284,7 +283,7 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                     b.Navigation("Item");
                 });
 
-            modelBuilder.Entity("ShoppingCart.Models.DataModels.OrderItem", b =>
+            modelBuilder.Entity("ShoppingCart.Models.DataModels.ItemOrder", b =>
                 {
                     b.HasOne("ShoppingCart.Models.DataModels.Item", "Item")
                         .WithMany("ItemOrders")
@@ -293,7 +292,7 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
                         .IsRequired();
 
                     b.HasOne("ShoppingCart.Models.DataModels.Order", "Order")
-                        .WithMany("OrderItems")
+                        .WithMany("ItemOrders")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -317,7 +316,7 @@ namespace ShoppingCart.Data.Migrations.ShoppingCartDb
 
             modelBuilder.Entity("ShoppingCart.Models.DataModels.Order", b =>
                 {
-                    b.Navigation("OrderItems");
+                    b.Navigation("ItemOrders");
                 });
 #pragma warning restore 612, 618
         }

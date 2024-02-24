@@ -4,5 +4,6 @@
     {
         public string Email { get; set; }
         public List<CartItemRequestDto> CartItems { get; set; }
+        public bool? ClearAll { get; set; }
     }
 }
