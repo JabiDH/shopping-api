@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Serilog;
 using ShoppingCart.Api.Middlewares;
 using ShoppingCart.Data.Contexts;
 using ShoppingCart.Services.Auth;
@@ -16,7 +11,6 @@ using ShoppingCart.Services.CartItems;
 using ShoppingCart.Services.Items;
 using ShoppingCart.Services.Permissions;
 using ShoppingCart.Services.Token;
-using System;
 using System.Text;
 using ShoppingCart.Services.Mappings;
 
@@ -126,8 +120,8 @@ namespace ShoppingCart.Api
 
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, AuthDbContext authDbContext, ShoppingCartDbContext shoppingCartDbContext)
+        {            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -149,7 +143,10 @@ namespace ShoppingCart.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-            });            
+            });
+
+            authDbContext.Database.Migrate();
+            shoppingCartDbContext.Database.Migrate();
         }
     }
 }
