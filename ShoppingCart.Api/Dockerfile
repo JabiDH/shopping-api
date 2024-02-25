@@ -24,3 +24,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "ShoppingCart.Api.dll"]
+
+#docker run -d -p 32770:8080 -p 32771:8081 -v ./aspnetapp.pfx:/app/aspnetapp.pfx -e ASPNETCORE_Kestrel__Certificates__Default__Password="password" shoppingcartapi:dev
