@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'mcr.microsoft.com/dotnet/sdk:8.0' // Use .NET SDK Docker image
+            args '-v /var/jenkins_home:/var/jenkins_home' // Mount Jenkins home directory
+        }
+    }
     
     environment {
         DOTNET_VERSION = '8' // Specify .NET version
