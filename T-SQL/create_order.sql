@@ -22,11 +22,12 @@ CREATE OR ALTER PROCEDURE create_order
 	@OrderId BIGINT OUTPUT,
 	@Email NVARCHAR(255),	
 	@Status NVARCHAR(255),
-	@SaleTax DECIMAL(18, 2),
+	@TaxRate DECIMAL(18, 2),
 	@OrderItems AS dbo.OrderItemsType READONLY
 AS
 DECLARE
 	@SubTotal DECIMAL(18, 2),
+	@SalesTax DECIMAL(18, 2),
 	@Total DECIMAL(18, 2),
 	@CreatedOn Datetime2(7)
 BEGIN
@@ -36,17 +37,18 @@ BEGIN
 
 	SELECT @SubTotal = SUM(Price * Quantity) FROM @OrderItems;
 
-	SET @Total = @SubTotal * (1 + @SaleTax);
+	SET @SalesTax = @SubTotal * @TaxRate;
+	SET @Total = @SubTotal + @SalesTax;
 
 	SET @CreatedOn = GETDATE();
 
-	INSERT INTO Orders (Email, CreatedOn, Status, SubTotal, SaleTax, Total)
-    VALUES (@Email, @CreatedOn, @Status, @SubTotal, @SaleTax, @Total)
+	INSERT INTO Orders (Email, CreatedOn, Status, TaxRate, SubTotal, SalesTax, Total)
+    VALUES (@Email, @CreatedOn, @Status, @TaxRate, @SubTotal, @SalesTax, @Total)
   
 	SET @OrderId = SCOPE_IDENTITY();
 
-	INSERT INTO OrderItems(ItemId, OrderId, Price, SaleTax, Quantity)
-	SELECT ItemId, @OrderId, Price, @SaleTax, Quantity
+	INSERT INTO OrderItems(ItemId, OrderId, TaxRate, Price, SalesTax, Quantity)
+	SELECT ItemId, @OrderId, TaxRate, Price, (Quantity * Price * TaxRate), Quantity
 	FROM @OrderItems;
 
 END

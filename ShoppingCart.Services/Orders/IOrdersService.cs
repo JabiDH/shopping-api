@@ -9,9 +9,9 @@ namespace ShoppingCart.Services.Orders
 {
     public interface IOrdersService
     {
-        Task<GetAllOrdersResponseDto> GetAllOrdersAsync(string? email = null);        
-        Task<GetOrderResponseDto> GetOrderAsync(long id);
-        Task<CreateOrderResponseDto> CreateOrderAsync(CreateOrderRequestDto requestDto);
-        Task<DeleteOrderResponseDto> DeleteOrderAsync(long id);
+        Task<OrdersResponseDto> GetAllOrdersAsync(string? email = null);        
+        Task<OrderResponseDto> GetOrderAsync(long id);
+        Task<OrderResponseDto> UpsertOrderAsync(long id, UpsertOrderRequestDto requestDto);
+        Task<OrderResponseDto> DeleteOrderAsync(long id);
     }
 }

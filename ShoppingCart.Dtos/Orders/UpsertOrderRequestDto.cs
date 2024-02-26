@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingCart.Dtos.Orders
 {
-    public class CreateOrderRequestDto
+    public class UpsertOrderRequestDto
     {
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -15,7 +15,8 @@ namespace ShoppingCart.Dtos.Orders
         [Required]
         public string Status { get; set; }
         [Required]
-        public decimal SaleTax { get; set; }
+        public decimal TaxRate { get; set; }
+        public DateTime? CloseOn { get; set; }
         public List<OrderItemDto> OrderItems { get; set; }
     }
 }

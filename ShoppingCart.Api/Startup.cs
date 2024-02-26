@@ -72,6 +72,7 @@ namespace ShoppingCart.Api
             services.AddTransient<IPermissionsService, PermissionsService>();
             services.AddTransient<ICartItemsService, CartItemsService>();
             services.AddTransient<IOrdersService, OrdersService>();
+            services.AddTransient<IOrdersService_UsingSql, OrdersService_UsingSql>();
 
             // Add Auto Mapper
             services.AddAutoMapper(typeof(AutoMapperProfiles));

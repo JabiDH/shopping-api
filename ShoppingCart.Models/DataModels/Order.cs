@@ -15,7 +15,8 @@ namespace ShoppingCart.Models.DataModels
         public DateTime? ClosedOn { get; set; }
         public string Status { get; set; }
         public decimal SubTotal { get; set; }
-        public decimal SaleTax { get; set; }
+        public decimal SalesTax { get; set; }
+        public decimal TaxRate { get; set; }
         public decimal Total { get; set; }
         public List<OrderItem> OrderItems { get; set; }
     }

@@ -34,8 +34,8 @@ END;
 CREATE TYPE OrderItemsType AS TABLE 
 (
 	ItemId BIGINT,
+	TaxRate DECIMAL(18, 2),
 	Price DECIMAL(18, 2),
-	SaleTax DECIMAL(18, 2),
 	Quantity INT
 );
 

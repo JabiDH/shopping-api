@@ -17,7 +17,7 @@ namespace ShoppingCart.Api.Controllers
         {
             this.ordersService = ordersService;
             this.logger = logger;
-            this.configuration = configuration;            
+            this.configuration = configuration;
         }
 
         [HttpGet]
@@ -49,20 +49,20 @@ namespace ShoppingCart.Api.Controllers
         }
 
         [HttpPost]        
-        public async Task<IActionResult> CreateOrder([FromBody] CreateOrderRequestDto request)
+        public async Task<IActionResult> CreateOrder([FromBody] UpsertOrderRequestDto request)
         {
-            var response = await ordersService.CreateOrderAsync(request);
+            var response = await ordersService.UpsertOrderAsync(0, request);
             return response.Succeeded ? Ok(response) : BadRequest(response);
         }
 
-        //[HttpPut]
-        //[Route("{id:long}")]
-        //[Authorize(Roles = "Admin")]
-        //public async Task<IActionResult> UpdateOrder([FromRoute] long id, UpsertItemRequestDto request)
-        //{            
-        //    var response = await ordersService.UpsertItemAsync(id, request);
-        //    return response.Succeeded ? Ok(response) : BadRequest(response);
-        //}
+        [HttpPut]
+        [Route("{id:long}")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateOrder([FromRoute] long id, UpsertOrderRequestDto request)
+        {
+            var response = await ordersService.UpsertOrderAsync(id, request);
+            return response.Succeeded ? Ok(response) : BadRequest(response);
+        }
 
         [HttpDelete]
         [Route("{id:long}")]

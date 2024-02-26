@@ -13,7 +13,8 @@ namespace ShoppingCart.Models.DataModels
         public long ItemId { get; set; }
         public long OrderId { get; set; }
         public decimal Price { get; set; }
-        public decimal SaleTax { get; set; }
+        public decimal SalesTax { get; set; }
+        public decimal TaxRate { get; set; }
         public int Quantity { get; set; }
         public Item Item { get; set; }
         public Order Order { get; set; }

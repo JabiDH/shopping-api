@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ShoppingCart.Dtos.Orders
 {
-    public class DeleteOrderResponseDto : BaseResponseDto
+    public class OrdersResponseDto : BaseResponseDto
     {
-        public OrderDto Order { get; set; }
+        public List<OrderDto> Orders { get; set; }
     }
 }
