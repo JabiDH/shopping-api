@@ -13,7 +13,6 @@ namespace ShoppingCart.Services.CartItems
 {
     public class CartItemsService : ICartItemsService
     {
-        private const decimal TAX_RATE = 0.07M;
         private readonly ShoppingCartDbContext dbContext;
         private readonly IMapper mapper;
 
@@ -128,16 +127,9 @@ namespace ShoppingCart.Services.CartItems
                 .Select(cartItem => mapper.Map<CartItemResponseDto>(cartItem))
                 .ToListAsync();
 
-            var subtotal = cartItems.Sum(ci => ci.Item.Price * ci.Quantity);
-            var salesTax = subtotal * TAX_RATE;
-            var total = subtotal + salesTax;
-
             var response = new CartItemsResponseDto()
             {
-                CartItems = cartItems,
-                Subtotal = subtotal,
-                SalesTax = salesTax, 
-                Total = total
+                CartItems = cartItems
             };
 
             return response;

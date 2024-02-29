@@ -24,12 +24,7 @@ namespace ShoppingCart.Api.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllOrders()
         {
-            var response = await ordersService.GetAllOrdersAsync();
-            if (response != null)
-            {
-                return response.Succeeded ? Ok(response) : BadRequest(response);
-            }
-            return BadRequest("Unhandle error occured on " + nameof(GetAllOrders));
+            return Ok(await ordersService.GetAllOrdersAsync());
         }
 
         [HttpGet]
@@ -44,8 +39,7 @@ namespace ShoppingCart.Api.Controllers
         [Route("{email}")]
         public async Task<IActionResult> GetUserOrders([FromRoute] string email)
         {
-            var response = await ordersService.GetAllOrdersAsync(email);
-            return response.Succeeded ? Ok(response) : NotFound(response);
+            return Ok(await ordersService.GetAllOrdersAsync(email));
         }
 
         [HttpPost]        

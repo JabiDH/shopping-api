@@ -10,8 +10,5 @@ namespace ShoppingCart.Dtos.CartItems
     public class CartItemsResponseDto : BaseResponseDto
     {
         public List<CartItemResponseDto> CartItems { get; set; }
-        public decimal Subtotal { get; set; }
-        public decimal SalesTax { get; set; }
-        public decimal Total { get; set; }
     }
 }

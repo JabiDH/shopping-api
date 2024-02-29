@@ -38,11 +38,6 @@ namespace ShoppingCart.Services.Orders
                 .ThenInclude(oi => oi.Item)
                 .ToListAsync();
             
-            if (orders != null && orders.Count() == 0)
-            {
-                responseDto.Error = "No orders found.";
-            }
-
             var orderDtos = mapper.Map<List<OrderDto>>(orders);
             responseDto.Orders = orderDtos;
 
