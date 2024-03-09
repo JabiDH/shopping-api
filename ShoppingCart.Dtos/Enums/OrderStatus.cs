@@ -11,6 +11,7 @@ namespace ShoppingCart.Dtos.Enums
         Created,
         InProgress,
         Shipped,
-        Delivered
+        Delivered, 
+        Closed
     }
 }
